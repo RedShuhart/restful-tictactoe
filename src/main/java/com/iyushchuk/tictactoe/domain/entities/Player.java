@@ -1,6 +1,7 @@
 package com.iyushchuk.tictactoe.domain.entities;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,19 +11,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "players")
-public class Player {
+public class Player implements IEntity {
 
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_generator")
-    @SequenceGenerator(name = "player_generator", sequenceName = "player_seq")
+    @SequenceGenerator(name = "player_generator", sequenceName = "player_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @Getter
     @Setter
-    @Column(name = "tag", nullable = false)
+    @Column(name = "tag", updatable = false, unique = true, nullable = false)
     private String tag;
 
     @Getter
@@ -46,5 +48,10 @@ public class Player {
     @Getter
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
+
+    public Player(String tag, String name) {
+        this.tag = tag;
+        this.name = name;
+    }
 }

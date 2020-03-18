@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS players
 CREATE TABLE IF NOT EXISTS games
 (
     id         BIGINT DEFAULT game_seq.nextval NOT NULL PRIMARY KEY,
+    tag        VARCHAR                         NOT NULL,
     player_x   BIGINT                          REFERENCES players (id) ON DELETE SET NULL,
     player_o   BIGINT                          REFERENCES players (id) ON DELETE SET NULL,
     state      SMALLINT                        NOT NULL,
@@ -32,8 +33,8 @@ CREATE TABLE IF NOT EXISTS games
 
 CREATE TABLE IF NOT EXISTS boards
 (
-    id         BIGINT NOT NULL PRIMARY KEY REFERENCES games (id) ON DELETE CASCADE,
-    placements VARCHAR(100)                     NOT NULL,
-    created_at TIMESTAMP                        NOT NULL,
+    id         BIGINT       NOT NULL PRIMARY KEY REFERENCES games (id) ON DELETE CASCADE,
+    placements VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
     updated_at TIMESTAMP
 );
