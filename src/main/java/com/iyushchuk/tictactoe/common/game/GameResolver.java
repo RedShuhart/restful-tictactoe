@@ -21,15 +21,13 @@ public class GameResolver {
     private static final char O = 'O';
     private static final char EMPTY = '-';
 
-    private GameState state;
 
-    private String placements;
+    private GameDto gameState;
 
     private Coordinate move;
 
     public GameResolver(GameDto dto, Coordinate move) {
-        this.state = dto.getState();
-        this.placements = dto.getBoard();
+        this.gameState = dto;
         this.move = move;
     }
 
@@ -42,43 +40,43 @@ public class GameResolver {
 
         GameState nextState = resolveNextState(moreMovesAvailable, win);
 
-        return GameDto.builder()
-                .board(placementsAfterMove)
-                .state(nextState)
-                .build();
+        return gameState
+                .withState(nextState)
+                .withPlacements(placementsAfterMove);
     }
 
     private boolean moreMovesAvailable(String placements) {
         return placements.contains("-");
     }
 
-    private boolean checkForWin(char[][] grid, Coordinate coordinate) {
+    private boolean checkForWin(char[][] grid, Coordinate coordinate) throws ApplicationException {
+        char piece = getCurrentPiece();
         return Arrays.stream(TraversType.values()).anyMatch(traversType -> {
             List<Coordinate> visited = new ArrayList<>();
-            return count(grid, coordinate, visited, traversType) >= WINNING_CONDITION;
+            return count(grid, coordinate, visited, traversType, piece) >= WINNING_CONDITION;
         });
     }
 
-    private int count(char[][] grid, Coordinate coordinate, List<Coordinate> visited, TraversType traversType) {
-        if (shouldProceed(grid, visited, coordinate)) {
+    private int count(char[][] grid, Coordinate coordinate, List<Coordinate> visited, TraversType traversType, char piece) {
+        if (shouldProceed(grid, visited, coordinate, piece)) {
             visited.add(coordinate);
             return 1
-                    + count(grid, Travers.nextCoordinate(coordinate, traversType), visited, traversType)
-                    + count(grid, Travers.oppositeCoordinate(coordinate, traversType), visited, traversType);
+                    + count(grid, Travers.nextCoordinate(coordinate, traversType), visited, traversType, piece)
+                    + count(grid, Travers.oppositeCoordinate(coordinate, traversType), visited, traversType, piece);
         }
         return 0;
     }
 
-    private boolean shouldProceed(char[][] grid, List<Coordinate> visited, Coordinate coordinate) {
+    private boolean shouldProceed(char[][] grid, List<Coordinate> visited, Coordinate coordinate, char piece) {
         int x = coordinate.getX();
         int y = coordinate.getY();
-        return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] == 'X' && !visited.contains(coordinate);
+        return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] == piece && !visited.contains(coordinate);
     }
 
-    private String performMove() throws FaultyMoveException, IllegalMoveException {
+    private String performMove() throws ApplicationException {
         checkIfCanMove();
         int position = toOneDimIndex(move, GAME_SIZE);
-        StringBuilder newPlacements = new StringBuilder(placements);
+        StringBuilder newPlacements = new StringBuilder(gameState.getPlacements());
         newPlacements.setCharAt(position, getCurrentPiece());
         return newPlacements.toString();
     }
@@ -89,43 +87,43 @@ public class GameResolver {
         }
 
         if (!canPerformMove()) {
-            throw new IllegalMoveException(state.getDescription());
+            throw new IllegalMoveException(gameState.getState().getDescription());
         }
     }
 
     private boolean canPerformMove() {
-        return GameState.ENDGAME_STATES.contains(state);
+        return !GameState.ENDGAME_STATES.contains(gameState.getState());
     }
 
     private boolean isFaultyMove() {
         int x = move.getX();
         int y = move.getY();
-        return 0 <= x && x < GAME_SIZE && 0 <= y && y < GAME_SIZE && isEmptySpot();
+        return 0 <= x && x < GAME_SIZE && 0 <= y && y < GAME_SIZE && !isEmptySpot();
     }
 
     private boolean isEmptySpot() {
-        return placements.charAt(toOneDimIndex(move, GAME_SIZE)) == EMPTY;
+        return gameState.getPlacements().charAt(toOneDimIndex(move, GAME_SIZE)) == EMPTY;
     }
 
-    private char getCurrentPiece() {
-        return switch (state) {
+    private char getCurrentPiece() throws ApplicationException {
+        return switch (gameState.getState()) {
             case X_MOVE -> X;
             case O_MOVE -> O;
-            default -> X;
+            default -> throw new ApplicationException("Something went wrong");
         };
     }
 
-    private  GameState resolveNextState(boolean movesAvailable, boolean win) throws ApplicationException {
-        if(movesAvailable && !win) {
-            return switch (state) {
+    private GameState resolveNextState(boolean movesAvailable, boolean win) throws ApplicationException {
+        if (movesAvailable && !win) {
+            return switch (gameState.getState()) {
                 case O_MOVE -> GameState.X_MOVE;
                 case X_MOVE -> GameState.O_MOVE;
                 default -> throw new ApplicationException("Something went wrong");
             };
         }
 
-        if(win) {
-            return switch (state) {
+        if (win) {
+            return switch (gameState.getState()) {
                 case O_MOVE -> GameState.O_WON;
                 case X_MOVE -> GameState.X_WON;
                 default -> throw new ApplicationException("Something went wrong");

@@ -3,10 +3,12 @@ package com.iyushchuk.tictactoe.common.dto;
 import com.iyushchuk.tictactoe.common.GameState;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 
 
 @Data
 @Builder
+@With
 public class GameDto implements IDto {
 
     private String xPlayer;
@@ -17,6 +19,8 @@ public class GameDto implements IDto {
 
     private GameState state;
 
-    private String board;
+    private String placements;
+
+    private String fancyBoard;
 
 }

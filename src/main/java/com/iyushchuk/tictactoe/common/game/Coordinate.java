@@ -18,7 +18,7 @@ public class Coordinate {
         return new Coordinate(x + 1, y + 1);
     }
 
-    public static Coordinate fromHumanCoordinates(int x, int y) {
-        return new Coordinate(x - 1, y -1);
+    public static Coordinate fromHumanCoordinates(Coordinate coordinate) {
+        return new Coordinate(coordinate.getX() - 1, coordinate.getY() -1);
     }
 }
