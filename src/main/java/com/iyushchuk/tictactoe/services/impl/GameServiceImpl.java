@@ -39,7 +39,7 @@ public class GameServiceImpl implements GameService {
 
         GameDto dto =  converter.fromEntity(game);
 
-        dto.setBoard(GridHelper.toFancyGrid(game.getBoard().getPlacements(), 10) );
+        enrichWithGrid(dto, game.getBoard().getPlacements());
 
         return dto;
     }
@@ -77,11 +77,6 @@ public class GameServiceImpl implements GameService {
         return converter.fromEntity(updatedGame);
     }
 
-    private Game findGameByTag(String tag) throws GameDoesNotExistException {
-        return gameRepository.findGameByTag(tag)
-                .orElseThrow(() -> new GameDoesNotExistException(tag));
-    }
-
     @Override
     public void delete(String tag) throws GameDoesNotExistException {
         Game game = gameRepository.findGameByTag(tag)
@@ -89,4 +84,15 @@ public class GameServiceImpl implements GameService {
 
         gameRepository.delete(game);
     }
+
+    private void enrichWithGrid(GameDto dto, String placements) {
+        dto.setBoard(GridHelper.toFancyGrid(placements, 10));
+    }
+
+    private Game findGameByTag(String tag) throws GameDoesNotExistException {
+        return gameRepository.findGameByTag(tag)
+                .orElseThrow(() -> new GameDoesNotExistException(tag));
+    }
+
+
 }
