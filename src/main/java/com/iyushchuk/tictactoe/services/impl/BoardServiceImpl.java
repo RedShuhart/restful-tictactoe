@@ -12,10 +12,11 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.iyushchuk.tictactoe.common.util.GridHelper.isValidGrid;
+
 @Service
 public class BoardServiceImpl implements BoardService {
 
-    private static final String GRID_PATTERN = "^[-XO]{100}$";
 
     private final BoardRepository boardRepository;
     private final BoardConverter converter;
@@ -43,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto create(BoardDto dto) throws UnsupportedGridException {
 
-        if(!isValidGrid(dto.getGrid())) {
+        if (!isValidGrid(dto.getGrid())) {
             throw new UnsupportedGridException();
         }
 
@@ -53,7 +54,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto update(Long id, BoardDto dto) throws UnsupportedGridException {
 
-        if(!isValidGrid(dto.getGrid())) {
+        if (!isValidGrid(dto.getGrid())) {
             throw new UnsupportedGridException();
         }
 
@@ -72,7 +73,4 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.deleteById(id);
     }
 
-    private boolean isValidGrid(String grid) {
-        return grid.matches(GRID_PATTERN);
-    }
 }

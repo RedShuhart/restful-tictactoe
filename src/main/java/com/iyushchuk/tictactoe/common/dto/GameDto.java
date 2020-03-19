@@ -17,6 +17,6 @@ public class GameDto implements IDto {
 
     private GameState state;
 
-    private BoardDto board;
+    private String board;
 
 }

@@ -3,6 +3,7 @@ package com.iyushchuk.tictactoe.services.impl;
 import com.iyushchuk.tictactoe.common.dto.GameDto;
 import com.iyushchuk.tictactoe.common.exceptions.GameDoesNotExistException;
 import com.iyushchuk.tictactoe.common.exceptions.PlayerDoesNotExistException;
+import com.iyushchuk.tictactoe.common.util.GridHelper;
 import com.iyushchuk.tictactoe.domain.entities.Board;
 import com.iyushchuk.tictactoe.domain.entities.Game;
 import com.iyushchuk.tictactoe.domain.entities.Player;
@@ -34,7 +35,13 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto getById(String tag) throws GameDoesNotExistException {
-        return converter.fromEntity(findGameByTag(tag));
+        Game game = findGameByTag(tag);
+
+        GameDto dto =  converter.fromEntity(game);
+
+        dto.setBoard(GridHelper.toFancyGrid(game.getBoard().getPlacements(), 10) );
+
+        return dto;
     }
 
     @Override
@@ -82,6 +89,4 @@ public class GameServiceImpl implements GameService {
 
         gameRepository.delete(game);
     }
-
-
 }

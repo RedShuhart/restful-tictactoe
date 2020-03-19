@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameConverter implements EntityDtoConverter<Game, GameDto> {
 
+    // DONT USE
     @Override
     @Deprecated
     public Game fromDto(GameDto dto) {
@@ -22,7 +23,7 @@ public class GameConverter implements EntityDtoConverter<Game, GameDto> {
                 .build();
     }
 
-
+    // DONT USE
     @Override
     @Deprecated
     public void updateEntity(Game entity, GameDto dto) {
