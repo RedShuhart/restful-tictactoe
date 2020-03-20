@@ -33,12 +33,12 @@ public class Player implements IEntity {
     private String name;
 
     @Getter
-    @OneToMany(mappedBy = "xPlayer")
+    @OneToMany(mappedBy = "playerX")
     private List<Game> xGames;
 
     @Getter
-    @OneToMany(mappedBy = "oPlayer")
-    private List<Game> yGames;
+    @OneToMany(mappedBy = "playerO")
+    private List<Game> oGames;
 
     @Getter
     @CreationTimestamp

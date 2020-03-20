@@ -17,8 +17,8 @@ public class GameConverter implements EntityDtoConverter<Game, GameDto> {
     @Override
     public GameDto fromEntity(Game entity) {
         return GameDto.builder()
-                .xPlayer(entity.getXPlayer() != null ? entity.getXPlayer().getTag() : "")
-                .oPlayer(entity.getOPlayer() != null ? entity.getOPlayer().getTag() : "")
+                .xPlayer(entity.getPlayerX() != null ? entity.getPlayerX().getTag() : "")
+                .oPlayer(entity.getPlayerO() != null ? entity.getPlayerO().getTag() : "")
                 .tag(entity.getTag())
                 .state(entity.getState())
                 .build();

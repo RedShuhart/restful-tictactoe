@@ -13,7 +13,10 @@ public class GameController extends CrudController<GameDto, String> {
 
     private final GamePlayerService gamePlayerService;
 
-    public GameController(CrudService<GameDto, String> crudService, GamePlayerService gamePlayerService) {
+    public GameController(
+            CrudService<GameDto, String> crudService,
+            GamePlayerService gamePlayerService
+    ) {
         super(crudService);
         this.gamePlayerService = gamePlayerService;
     }
@@ -21,7 +24,7 @@ public class GameController extends CrudController<GameDto, String> {
     @PatchMapping("/{tag}")
     public GameDto playTurn(
             @RequestHeader(value = "playerTag") String playerTag,
-            @PathVariable(value = "tag")  String gameTag,
+            @PathVariable(value = "tag") String gameTag,
             @RequestBody Coordinate turnCoordinate) throws ApplicationException {
         return gamePlayerService.playGame(playerTag, gameTag, turnCoordinate);
     }

@@ -1,5 +1,6 @@
 package com.iyushchuk.tictactoe.services.impl;
 
+import com.iyushchuk.tictactoe.common.GameState;
 import com.iyushchuk.tictactoe.common.dto.BoardDto;
 import com.iyushchuk.tictactoe.common.dto.GameDto;
 import com.iyushchuk.tictactoe.common.exceptions.ApplicationException;
@@ -13,11 +14,11 @@ import com.iyushchuk.tictactoe.domain.repositories.GameRepository;
 import com.iyushchuk.tictactoe.services.BoardService;
 import com.iyushchuk.tictactoe.services.GameService;
 import com.iyushchuk.tictactoe.services.PlayerService;
-import com.iyushchuk.tictactoe.services.converters.BoardConverter;
 import com.iyushchuk.tictactoe.services.converters.GameConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -64,8 +65,8 @@ public class GameServiceImpl implements GameService {
 
         Game game = new Game();
 
-        game.setOPlayer(oPlayer);
-        game.setXPlayer(xPlayer);
+        game.setPlayerO(oPlayer);
+        game.setPlayerX(xPlayer);
         game.setBoard(new Board());
 
         return converter.fromEntity(gameRepository.save(game));
@@ -80,8 +81,8 @@ public class GameServiceImpl implements GameService {
 
         Player oPlayer = playerService.findPlayerByTag(dto.getOPlayer());
 
-        game.setXPlayer(xPlayer);
-        game.setOPlayer(oPlayer);
+        game.setPlayerX(xPlayer);
+        game.setPlayerO(oPlayer);
         game.setState(dto.getState());
 
         boardService.update(game.getId(), new BoardDto(dto.getPlacements()));
@@ -101,6 +102,16 @@ public class GameServiceImpl implements GameService {
 
         gameRepository.delete(game);
     }
+
+    @Override
+    public List<GameDto> getGamesForPlayer(Player player, List<GameState> states) {
+        return gameRepository.findGamesByPlayerOOrPlayerXAndStateIn(player, player, states)
+                .stream()
+                .map(converter::fromEntity)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 
     private void enrichWithGrid(GameDto dto, String placements) {
         dto.setPlacements(placements);

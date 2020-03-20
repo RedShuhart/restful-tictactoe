@@ -1,5 +1,7 @@
 package com.iyushchuk.tictactoe.services.impl;
 
+import com.iyushchuk.tictactoe.common.GameState;
+import com.iyushchuk.tictactoe.common.dto.GameDto;
 import com.iyushchuk.tictactoe.common.dto.PlayerDto;
 import com.iyushchuk.tictactoe.common.exceptions.PlayerAlreadyExistsException;
 import com.iyushchuk.tictactoe.common.exceptions.PlayerDoesNotExistException;
@@ -25,7 +27,6 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<PlayerDto> getAll() {
-
         return converter.fromEntities(playerRepository.findAll());
     }
 

@@ -32,13 +32,13 @@ public class Game implements IEntity {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_x", referencedColumnName = "id", nullable = false)
-    private Player xPlayer;
+    private Player playerX;
 
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_o", referencedColumnName = "id", nullable = false)
-    private Player oPlayer;
+    private Player playerO;
 
     @Setter
     @Getter
