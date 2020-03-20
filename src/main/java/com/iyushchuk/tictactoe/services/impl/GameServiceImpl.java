@@ -105,11 +105,16 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<GameDto> getGamesForPlayer(Player player, List<GameState> states) {
-        return gameRepository.findGamesByPlayerOOrPlayerXAndStateIn(player, player, states)
-                .stream()
-                .map(converter::fromEntity)
-                .distinct()
-                .collect(Collectors.toList());
+
+        List<Game> games = states != null
+                ? gameRepository.findGamesByPlayerOOrPlayerXAndStateIn(player, player, states)
+                : gameRepository.findGamesByPlayerOOrPlayerX(player, player);
+
+            return games.stream()
+                    .map(converter::fromEntity)
+                    .distinct()
+                    .collect(Collectors.toList());
+
     }
 
 

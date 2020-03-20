@@ -14,7 +14,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     Optional<Game> findGameByTag(String tag);
 
-    List<Game> findGamesByPlayerO(Player oPlayer);
+    List<Game> findGamesByPlayerOOrPlayerX(Player oPlayer, Player xPlayer);
 
     List<Game> findGamesByPlayerOOrPlayerXAndStateIn(Player oPlayer, Player xPlayer, List<GameState> states);
 }

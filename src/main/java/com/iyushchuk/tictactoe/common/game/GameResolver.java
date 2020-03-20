@@ -82,7 +82,7 @@ public class GameResolver {
     }
 
     private void checkIfCanMove() throws FaultyMoveException, IllegalMoveException {
-        if (isFaultyMove()) {
+        if (!isCorrectMove()) {
             throw new FaultyMoveException(move.toHumanCoordinates());
         }
 
@@ -95,10 +95,10 @@ public class GameResolver {
         return !GameState.ENDGAME_STATES.contains(gameState.getState());
     }
 
-    private boolean isFaultyMove() {
+    private boolean isCorrectMove() {
         int x = move.getX();
         int y = move.getY();
-        return 0 <= x && x < GAME_SIZE && 0 <= y && y < GAME_SIZE && !isEmptySpot();
+        return 0 <= x && x < GAME_SIZE && 0 <= y && y < GAME_SIZE && isEmptySpot();
     }
 
     private boolean isEmptySpot() {
