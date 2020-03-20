@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "99458293-0d1d-4520-97ed-91427e70fa74",
+		"name": "tictactoe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create first player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tag\": \"john_smith\",\n    \"name\": \"John Smith\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "",
+							"disabled": true
+						}
+					]
+				},
+				"description": "## Player\n* name: string\n* tag: string (required)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create second player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tag\": \"mike_doe\",\r\n    \"name\": \"Mike Doe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					]
+				},
+				"description": "## Player\n* name: string\n* tag: string (required)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"xPlayer\": \"john_smith\",\n\t\"oPlayer\": \"mike_doe\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/games",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"games"
+					]
+				},
+				"description": "### Create new game with players\n\n* xPlayer: string (required)\n* oPlayer: string (required)\n* \nNote: players should exist"
+			},
+			"response": []
+		},
+		{
+			"name": "Get game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/games/:tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"games",
+						":tag"
+					],
+					"variable": [
+						{
+							"key": "tag",
+							"value": "01CBE95D47934A8D80DA18EC84BF3A42"
+						}
+					]
+				},
+				"description": "### Provided with **:tag** it will return previously created game.\nNote:\nIt contains formatted \"board\" string.\nJson obviously doesn't support formatted multiline strings so it is pretty useless.\nYou can still check it out with usage of some encoding tool.\nExample: [https://www.online-toolz.com/tools/text-unicode-entities-convertor.php]"
+			},
+			"response": []
+		},
+		{
+			"name": "X Player move",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "playerTag",
+						"value": "john_smith",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"x\": \"2\",\r\n    \"y\": \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/games/:tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"games",
+						":tag"
+					],
+					"variable": [
+						{
+							"key": "tag",
+							"value": "3BAE0227480C45FD8FE7E543BF762DA9"
+						}
+					]
+				},
+				"description": "This one requires a header.\n\nHeader: playerTag (tag of a player performing a move)"
+			},
+			"response": []
+		},
+		{
+			"name": "O Player Move",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "playerTag",
+						"value": "mike_doe",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"x\": \"9\",\r\n    \"y\": \"3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/games/:tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"games",
+						":tag"
+					],
+					"variable": [
+						{
+							"key": "tag",
+							"value": "FD71BB7A88E541ADAC6D1E28C947468C"
+						}
+					]
+				},
+				"description": "This one requires a header.\n\nHeader: playerTag (tag of a player performing a move)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get games of player",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/players/:tag/games?state=X_MOVE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players",
+						":tag",
+						"games"
+					],
+					"query": [
+						{
+							"key": "state",
+							"value": "X_MOVE"
+						}
+					],
+					"variable": [
+						{
+							"key": "tag",
+							"value": "john_smith"
+						}
+					]
+				},
+				"description": "When provided with player's tag nad list of desired states, will return collection of player's games filtered by state."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
