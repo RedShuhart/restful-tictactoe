@@ -61,7 +61,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void shouldReturnListOfGamesTest() throws Exception {
+    void getListOfGames_ShouldReturnOkAndDtoList() throws Exception {
         GameDto game1 = GameDto.builder().xPlayer("player1").state(GameState.DRAW).build();
         GameDto game2 = GameDto.builder().xPlayer("player1").state(GameState.X_WON).build();
 
@@ -80,7 +80,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void shouldReturnGameTest() throws Exception {
+    void getGame_ShouldReturnOkAndDto() throws Exception {
         GameDto game = GameDto.builder().xPlayer("player1").state(GameState.DRAW).build();
 
         when(crudService.getById("tag1")).thenReturn(game);
@@ -93,7 +93,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void shouldReturnGameNotFoundTest() throws Exception {
+    void getGame_ShouldThrowNotExists() throws Exception {
 
         when(crudService.getById("non_existing_tag")).thenThrow(new GameDoesNotExistException("non_existing_tag"));
 
@@ -102,7 +102,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void shouldCreateNewGameTest() throws Exception {
+    void createGame_ShouldReturnOKAndDto() throws Exception {
 
         GameDto game = GameDto.builder().xPlayer("player1").oPlayer("player2").build();
 
@@ -120,7 +120,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void shouldPlayTurnTest() throws Exception {
+    void playTurn_ShouldReturnNextState() throws Exception {
         Coordinate move = new Coordinate(1, 1);
 
         GameDto game = GameDto.builder().xPlayer("player_tag").tag("game_tag").state(GameState.DRAW).build();
@@ -142,7 +142,7 @@ public class GameControllerTest {
 
 
     @Test
-    void shouldReturnNotAuthorizedToPlayTest() throws Exception {
+    void playTurn_ShouldThrowNotAuthorized() throws Exception {
 
         Coordinate move = new Coordinate(1, 1);
 
@@ -160,7 +160,7 @@ public class GameControllerTest {
 
 
     @Test
-    void shouldDeleteGameTest() throws Exception {
+    void deleteGame_ShouldReturnOk() throws Exception {
 
         doNothing().when(crudService).delete("tag");
 

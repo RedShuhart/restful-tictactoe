@@ -56,7 +56,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldReturnListOfPlayersTest() throws Exception {
+    void getPlayers_ShouldReturnOkAndDtoList() throws Exception {
         List<PlayerDto> players = List.of(new PlayerDto("tag1", "name1"), new PlayerDto("tag2", "name2"));
 
         when(crudService.getAll()).thenReturn(players);
@@ -72,7 +72,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldReturnExistingPlayerTest() throws Exception {
+    void getPlayerById_ShouldReturnOkAndDto() throws Exception {
         PlayerDto player = new PlayerDto("tag1", "name1");
 
         when(crudService.getById("tag1")).thenReturn(player);
@@ -85,7 +85,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldReturnPlayerNotFoundTest() throws Exception {
+    void getPlayerById_ShouldThrowNotExists() throws Exception {
 
         when(crudService.getById("tag3")).thenThrow(new PlayerDoesNotExistException("tag3"));
 
@@ -94,7 +94,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldCreateNewPlayerTest() throws Exception {
+    void createPlayer_ShouldReturnOkAndDto() throws Exception {
 
         PlayerDto playerDto = new PlayerDto("tag4", "name4");
 
@@ -112,7 +112,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldUpdatePlayerTest() throws Exception {
+    void updatePlayer_ShouldReturnOkAndDto() throws Exception {
         PlayerDto playerDto = new PlayerDto("tag7", "name7");
 
         when(crudService.update("tag7", playerDto)).thenReturn(playerDto);
@@ -130,7 +130,7 @@ public class PlayerControllerTest {
 
 
     @Test
-    void shouldDeletePlayerTest() throws Exception {
+    void deletePlayer_ShouldReturnOK() throws Exception {
 
         doNothing().when(crudService).delete("tag8");
 
@@ -139,7 +139,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldReturnPlayerAlreadyExistsTest() throws Exception {
+    void createPlayer_ShouldThrowPlayerAlreadyExists() throws Exception {
 
         PlayerDto playerDto = new PlayerDto("tag5", "name5");
 
@@ -154,7 +154,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void shouldReturnPlayerGamesTest() throws Exception {
+    void getPlayersGames_ShouldReturnDtoList() throws Exception {
 
         GameDto game1 = GameDto.builder().xPlayer("tag6").state(GameState.DRAW).build();
         GameDto game2 = GameDto.builder().xPlayer("tag6").state(GameState.DRAW).build();

@@ -14,7 +14,6 @@ import com.iyushchuk.tictactoe.domain.repositories.GameRepository;
 import com.iyushchuk.tictactoe.services.BoardService;
 import com.iyushchuk.tictactoe.services.GameService;
 import com.iyushchuk.tictactoe.services.PlayerService;
-import com.iyushchuk.tictactoe.services.converters.GameConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,30 +25,30 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final PlayerService playerService;
     private final BoardService boardService;
-    private final GameConverter converter;
 
     public GameServiceImpl(
             GameRepository gameRepository,
             PlayerService playerService,
-            BoardService boardService,
-            GameConverter converter
+            BoardService boardService
     ) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.boardService = boardService;
-        this.converter = converter;
     }
 
     @Override
     public List<GameDto> getAll() {
-        return converter.fromEntities(gameRepository.findAll());
+        return gameRepository.findAll()
+                .stream()
+                .map(this::toGameDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public GameDto getById(String tag) throws GameDoesNotExistException {
         Game game = findGameByTag(tag);
 
-        GameDto dto = converter.fromEntity(game);
+        GameDto dto = toGameDto(game);
 
         enrichWithGrid(dto, game.getBoard().getPlacements());
 
@@ -69,7 +68,7 @@ public class GameServiceImpl implements GameService {
         game.setPlayerX(xPlayer);
         game.setBoard(new Board());
 
-        return converter.fromEntity(gameRepository.save(game));
+        return toGameDto(gameRepository.save(game));
     }
 
     @Override
@@ -89,7 +88,7 @@ public class GameServiceImpl implements GameService {
 
         Game updatedGame = gameRepository.save(game);
 
-        GameDto updatedGameDto =  converter.fromEntity(updatedGame);
+        GameDto updatedGameDto = toGameDto(updatedGame);
         enrichWithGrid(updatedGameDto, game.getBoard().getPlacements());
 
         return updatedGameDto;
@@ -111,10 +110,15 @@ public class GameServiceImpl implements GameService {
                 : gameRepository.findGamesByPlayerOOrPlayerX(player, player);
 
             return games.stream()
-                    .map(converter::fromEntity)
+                    .map(this::toGameDto)
                     .distinct()
                     .collect(Collectors.toList());
 
+    }
+
+    public Game findGameByTag(String tag) throws GameDoesNotExistException {
+        return gameRepository.findGameByTag(tag)
+                .orElseThrow(() -> new GameDoesNotExistException(tag));
     }
 
 
@@ -123,8 +127,13 @@ public class GameServiceImpl implements GameService {
         dto.setFancyBoard(GridHelper.toFancyGrid(placements, 10));
     }
 
-    public Game findGameByTag(String tag) throws GameDoesNotExistException {
-        return gameRepository.findGameByTag(tag)
-                .orElseThrow(() -> new GameDoesNotExistException(tag));
+
+    private GameDto toGameDto(Game entity) {
+        return GameDto.builder()
+                .xPlayer(entity.getPlayerX() != null ? entity.getPlayerX().getTag() : "")
+                .oPlayer(entity.getPlayerO() != null ? entity.getPlayerO().getTag() : "")
+                .tag(entity.getTag())
+                .state(entity.getState())
+                .build();
     }
 }
