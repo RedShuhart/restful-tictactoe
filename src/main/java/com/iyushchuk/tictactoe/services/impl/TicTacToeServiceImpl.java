@@ -35,11 +35,5 @@ public class TicTacToeServiceImpl implements TicTacToeService {
 
         return gameService.getGamesForPlayer(player, states);
 
-//        return Stream.of(player.getXGames(), player.getOGames())
-//                .flatMap(Collection::stream)
-//                .map(gameConverter::fromEntity)
-//                .distinct()
-//                .filter(game -> states.contains(game.getState()))
-//                .collect(Collectors.toList());
     }
 }
