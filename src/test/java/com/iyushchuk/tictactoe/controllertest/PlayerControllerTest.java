@@ -7,10 +7,8 @@ import com.iyushchuk.tictactoe.common.exceptions.PlayerAlreadyExistsException;
 import com.iyushchuk.tictactoe.common.exceptions.PlayerDoesNotExistException;
 import com.iyushchuk.tictactoe.controllers.ApplicationExceptionHandlerController;
 import com.iyushchuk.tictactoe.controllers.PlayerController;
-import com.iyushchuk.tictactoe.domain.entities.Player;
 import com.iyushchuk.tictactoe.services.CrudService;
 import com.iyushchuk.tictactoe.services.TicTacToeService;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
@@ -27,9 +24,9 @@ import java.util.List;
 import static com.iyushchuk.tictactoe.controllertest.ControllerTestUtil.asJsonString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -115,6 +112,38 @@ public class PlayerControllerTest {
     }
 
     @Test
+    void shouldUpdatePlayerTest() throws Exception {
+        PlayerDto playerDto = new PlayerDto("tag7", "name7");
+
+        when(crudService.update("tag7", playerDto)).thenReturn(playerDto);
+
+        mockMvc.perform(
+                put("/players/{id}", "tag7")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(playerDto))
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.tag", is("tag7")))
+                .andExpect(jsonPath("$.name", is("name7")));
+    }
+
+
+    @Test
+    void shouldDeletePlayerTest() throws Exception {
+        PlayerDto playerDto = new PlayerDto("tag7", "name7");
+
+        doNothing().when(crudService).delete("tag8");
+
+        mockMvc.perform(
+                delete("/players/{id}", "tag8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(playerDto))
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void shouldReturnPlayerExistsTest() throws Exception {
 
         PlayerDto playerDto = new PlayerDto("tag5", "name5");
@@ -153,4 +182,5 @@ public class PlayerControllerTest {
                 .andExpect(jsonPath("$[1].xplayer", is("tag6")))
                 .andExpect(jsonPath("$[1].state", is("DRAW")));
     }
+
 }
