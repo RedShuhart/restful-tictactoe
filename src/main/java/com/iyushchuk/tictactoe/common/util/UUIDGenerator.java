@@ -4,6 +4,10 @@ import java.util.UUID;
 
 public class UUIDGenerator {
     public static String generateId() {
-        return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        return UUID.randomUUID().toString().replace("-", "").toUpperCase();
+    }
+
+    private UUIDGenerator() {
+        
     }
 }

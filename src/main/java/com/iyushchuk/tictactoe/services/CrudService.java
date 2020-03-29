@@ -5,15 +5,15 @@ import com.iyushchuk.tictactoe.common.exceptions.ApplicationException;
 
 import java.util.List;
 
-public interface CrudService<Dto extends IDto, Id> {
+public interface CrudService<DTO extends IDto, ID> {
 
-    List<Dto> getAll();
+    List<DTO> getAll();
 
-    Dto getById(Id id) throws ApplicationException;
+    DTO getById(ID id) throws ApplicationException;
 
-    Dto create(Dto dto) throws ApplicationException;
+    DTO create(DTO dto) throws ApplicationException;
 
-    Dto update(Id id, Dto dto) throws ApplicationException;
+    DTO update(ID id, DTO dto) throws ApplicationException;
 
-    void delete(Id id) throws ApplicationException;
+    void delete(ID id) throws ApplicationException;
 }

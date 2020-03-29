@@ -7,36 +7,36 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public abstract class CrudController<Dto extends IDto, Id> {
+public abstract class CrudController<DTO extends IDto, ID> {
 
-    protected final CrudService<Dto, Id> crudService;
+    protected final CrudService<DTO, ID> crudService;
 
-    public CrudController(CrudService<Dto, Id> crudService) {
+    public CrudController(CrudService<DTO, ID> crudService) {
         this.crudService = crudService;
     }
 
     @GetMapping
-    public List<Dto> getAll() {
+    public List<DTO> getAll() {
         return crudService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Dto getById(@PathVariable(value = "id") Id id) throws ApplicationException {
+    public DTO getById(@PathVariable(value = "id") ID id) throws ApplicationException {
         return crudService.getById(id);
     }
 
     @PostMapping
-    public Dto create(@RequestBody Dto request) throws ApplicationException {
+    public DTO create(@RequestBody DTO request) throws ApplicationException {
         return crudService.create(request);
     }
 
     @PutMapping("/{id}")
-    public Dto update(@PathVariable(value = "id") Id id, @RequestBody Dto request) throws ApplicationException {
+    public DTO update(@PathVariable(value = "id") ID id, @RequestBody DTO request) throws ApplicationException {
         return crudService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") Id id) throws ApplicationException {
+    public void delete(@PathVariable(value = "id") ID id) throws ApplicationException {
         crudService.delete(id);
     }
 }

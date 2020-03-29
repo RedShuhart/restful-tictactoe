@@ -27,4 +27,7 @@ public class Travers {
             case RIGHT_DIAGONAL -> new Coordinate(x - 1, y - 1);
         };
     }
+
+    private Travers() {}
+
 }

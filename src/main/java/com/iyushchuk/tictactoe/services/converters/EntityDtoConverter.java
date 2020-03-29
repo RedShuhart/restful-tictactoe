@@ -7,19 +7,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface EntityDtoConverter<Entity extends IEntity, Dto extends IDto>  {
+public interface EntityDtoConverter<ENTITY extends IEntity, DTO extends IDto>  {
 
-    Entity fromDto(Dto dto);
+    ENTITY fromDto(DTO dto);
 
-    Dto fromEntity(Entity entity);
+    DTO fromEntity(ENTITY entity);
 
-    void updateEntity(Entity entity, Dto dto);
+    void updateEntity(ENTITY entity, DTO dto);
 
-    default List<Dto> fromEntities(Collection<Entity> entities) {
+    default List<DTO> fromEntities(Collection<ENTITY> entities) {
         return entities.stream().map(this::fromEntity).collect(Collectors.toList());
     }
 
-    default List<Entity> fromDtos(Collection<Dto> entities) {
+    default List<ENTITY> fromDtos(Collection<DTO> entities) {
         return entities.stream().map(this::fromDto).collect(Collectors.toList());
     }
 

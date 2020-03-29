@@ -54,5 +54,9 @@ public class GridHelper {
 
         return builder.toString();
     }
+
+    private GridHelper() {
+
+    }
 }
 
