@@ -3,9 +3,11 @@ package com.iyushchuk.tictactoe.common.game;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public class Coordinate {
 
     @Getter

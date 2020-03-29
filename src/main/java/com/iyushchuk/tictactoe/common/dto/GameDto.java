@@ -1,16 +1,15 @@
 package com.iyushchuk.tictactoe.common.dto;
 
 import com.iyushchuk.tictactoe.common.GameState;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.With;
+import lombok.*;
 
 
 @Data
 @Builder
 @With
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameDto implements IDto {
 
     private String xPlayer;

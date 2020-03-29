@@ -131,20 +131,15 @@ public class PlayerControllerTest {
 
     @Test
     void shouldDeletePlayerTest() throws Exception {
-        PlayerDto playerDto = new PlayerDto("tag7", "name7");
 
         doNothing().when(crudService).delete("tag8");
 
-        mockMvc.perform(
-                delete("/players/{id}", "tag8")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(playerDto))
-        )
+        mockMvc.perform(delete("/players/{id}", "tag8"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void shouldReturnPlayerExistsTest() throws Exception {
+    void shouldReturnPlayerAlreadyExistsTest() throws Exception {
 
         PlayerDto playerDto = new PlayerDto("tag5", "name5");
 
