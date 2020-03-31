@@ -2,11 +2,8 @@ package com.iyushchuk.tictactoe.controllertest;
 
 import com.iyushchuk.tictactoe.common.GameState;
 import com.iyushchuk.tictactoe.common.dto.GameDto;
-import com.iyushchuk.tictactoe.common.dto.PlayerDto;
 import com.iyushchuk.tictactoe.common.exceptions.GameDoesNotExistException;
 import com.iyushchuk.tictactoe.common.exceptions.NotAuthorizedToPlayGameException;
-import com.iyushchuk.tictactoe.common.exceptions.PlayerAlreadyExistsException;
-import com.iyushchuk.tictactoe.common.exceptions.PlayerDoesNotExistException;
 import com.iyushchuk.tictactoe.common.game.Coordinate;
 import com.iyushchuk.tictactoe.controllers.ApplicationExceptionHandlerController;
 import com.iyushchuk.tictactoe.controllers.GameController;
@@ -30,9 +27,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameControllerTest {

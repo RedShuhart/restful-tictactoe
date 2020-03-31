@@ -167,7 +167,7 @@ public class PlayerControllerTest {
 
         mockMvc.perform(
                 get("/players/{id}/games", "tag6")
-                .param("state", GameState.DRAW.toString())
+                        .param("state", GameState.DRAW.toString())
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

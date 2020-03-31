@@ -4,7 +4,6 @@ import com.iyushchuk.tictactoe.common.game.Coordinate;
 import com.iyushchuk.tictactoe.common.util.GridHelper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 
